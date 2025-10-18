@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELYSIAN - Luxury Emergency Response System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Root -->
+    <div id="app"></div>
+    
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="logo-animation">
+                <div class="caduceus-symbol">⚕️</div>
+                <h1 class="app-title">ELYSIAN</h1>
+                <div class="loading-dots">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Active Modal -->
+    <div id="emergencyActiveModal" class="emergency-modal hidden">
+        <div class="emergency-content">
+            <div class="emergency-header">
+                <h1>🚨 EMERGENCY ACTIVE</h1>
+                <p>Help is on the way! Your royal guardian system is at work.</p>
+                <button class="close-emergency" onclick="closeEmergencyModal()">← Back to App</button>
+            </div>
+            
+            <div class="emergency-status-grid">
+                <div class="status-card dispatched">
+                    <div class="status-icon">🚑</div>
+                    <h3>Ambulance Dispatched</h3>
+                    <p>ETA: <span id="ambulanceETA">6 min</span></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%"></div>
+                    </div>
+                </div>
+                
+                <div class="status-card notified">
+                    <div class="status-icon">🏥</div>
+                    <h3>Hospital Notified</h3>
+                    <p>Apollo Hospital contacted</p>
+                    <div class="badge success">Prepared</div>
+                </div>
+            </div>
+            
+            <div class="location-shared">
+                <h4>📍 Location Shared</h4>
+                <p><strong>Coordinates:</strong> 12.971600, 77.594600</p>
+                <p><strong>Address:</strong> Bangalore, Karnataka, India</p>
+                <p>👥 Medical profile &amp; emergency contacts automatically shared</p>
+            </div>
+            
+            <div class="driver-info">
+                <h4>🚑 Live Ambulance Tracking</h4>
+                <div style="background: rgba(34, 197, 94, 0.1); padding: 1rem; border-radius: 10px; margin: 1rem 0; border: 1px solid rgba(34, 197, 94, 0.3);">
+                    <p><strong>Driver:</strong> Rajesh Kumar 👨‍⚕️</p>
+                    <p><strong>Vehicle:</strong> KA-01-AB-1234</p>
+                    <p><strong>Distance:</strong> 3.0 km away</p>
+                    <div class="progress-bar" style="margin: 0.5rem 0;">
+                        <div class="progress-fill" style="width: 35%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #059669;">Progress to your location - ETA: <span id="ambulanceETA">6 min</span></p>
+                </div>
+                <button class="call-driver-btn">📞 Call Driver Directly</button>
+                <button class="call-driver-btn" style="background: #dc2626; margin-left: 10px;">🆘 Emergency Line</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lexora Chatbot -->
+    <div id="lexoraChatbot" class="chatbot-container">
+        <button id="chatbotToggle" class="chatbot-toggle" title="Chat with Lexora">
+            <span class="crown-icon">👑</span>
+        </button>
+        
+        <div id="chatWindow" class="chat-window hidden">
+            <div class="chat-header">
+                <div class="lexora-info">
+                    <span class="crown-large">👑</span>
+                    <div>
+                        <h3>Lexora</h3>
+                        <p>Your AI Guardian</p>
+                    </div>
+                </div>
+                <button id="closeChatbot" class="close-chat">×</button>
+            </div>
+            
+            <div id="chatMessages" class="chat-messages">
+                <div class="message lexora-message">
+                    <div class="message-bubble lexora-bubble">
+                        Hello Sanjay 👑, I'm Lexora — your AI Guardian. How may I assist you today?
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="sendQuickMessage('Activate SOS')">Activate SOS</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Voice Commands')">Voice Commands</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Medical Info')">Medical Info</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Emergency Services')">Emergency Services</button>
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Type your message..." maxlength="200">
+                <button id="voiceChatBtn" class="voice-btn" title="Voice Message">🎤</button>
+                <button id="sendChatBtn" class="send-btn" title="Send Message">→</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Recognition Modal -->
+    <div id="voiceModal" class="voice-modal hidden">
+        <div class="voice-content">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🎤</div>
+                <h2 style="color: var(--deep-crimson); font-family: var(--font-display); margin-bottom: 0.5rem;">Voice Security Activation</h2>
+                <p style="color: var(--deep-crimson); font-weight: 500;">Speak clearly: <strong>"emergency1234"</strong></p>
+            </div>
+            
+            <div class="voice-visualizer">
+                <div class="wave-container">
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                </div>
+            </div>
+            
+            <div id="voiceStatus" class="voice-status">Click microphone and speak the code...</div>
+            
+            <div style="background: rgba(212, 175, 55, 0.1); padding: 1rem; border-radius: 10px; margin: 1rem 0; border: 1px solid rgba(212, 175, 55, 0.3);">
+                <p style="margin: 0; text-align: center; color: var(--deep-crimson); font-size: 0.9rem;">
+                    🔒 <strong>Security Protocol:</strong> Voice recognition ensures authorized emergency activation only
+                </p>
+            </div>
+            
+            <div class="voice-actions">
+                <button onclick="stopVoiceRecognition()" class="btn secondary">Stop Listening</button>
+                <button onclick="closeVoiceModal()" class="btn outline">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
